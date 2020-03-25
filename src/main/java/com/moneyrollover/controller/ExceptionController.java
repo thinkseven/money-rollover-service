@@ -6,11 +6,17 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class AccountExceptionController {
+public class ExceptionController {
 
     @ExceptionHandler(value = AccountNotFoundException.class)
     public ResponseEntity<AccountNotFoundResponse> exception(AccountNotFoundException exception) {
         return new ResponseEntity<AccountNotFoundResponse>(new AccountNotFoundResponse(exception.getMessage()),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = TransactionNotFoundException.class)
+    public ResponseEntity<TransactionNotFoundResponse> exception(TransactionNotFoundException exception) {
+        return new ResponseEntity<TransactionNotFoundResponse>(new TransactionNotFoundResponse(exception.getMessage()),
                 HttpStatus.NOT_FOUND);
     }
 }
