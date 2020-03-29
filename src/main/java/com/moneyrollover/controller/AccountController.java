@@ -5,6 +5,7 @@ import com.moneyrollover.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Sort;
 import java.util.List;
 
 @RestController
@@ -16,7 +17,7 @@ public class AccountController {
     // Get all accounts
     @GetMapping("/Account")
     public List<Account> getAllAccount() {
-        return accountRepository.findAll();
+        return accountRepository.findAll(Sort.by(Sort.Direction.ASC, "paymentDueDay"));
     }
 
     // Create a new account

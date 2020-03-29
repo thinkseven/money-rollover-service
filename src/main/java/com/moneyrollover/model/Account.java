@@ -31,10 +31,10 @@ public class Account {
     private String accountType;
 
     @Column(name = "PaymentDueDay")
-    private Integer paymentDueDay;
+    private Date paymentDueDay;
 
     @Column(name = "StatementClosingDay")
-    private Integer statementClosingDay;
+    private Date statementClosingDay;
 
     @Column(name = "InstallmentAmount")
     private Double installmentAmount;
@@ -92,19 +92,19 @@ public class Account {
         this.accountType = accountType;
     }
 
-    public Integer getPaymentDueDay() {
+    public Date getPaymentDueDay() {
         return paymentDueDay;
     }
 
-    public void setPaymentDueDay(Integer paymentDueDay) {
+    public void setPaymentDueDay(Date paymentDueDay) {
         this.paymentDueDay = paymentDueDay;
     }
 
-    public Integer getStatementClosingDay() {
+    public Date getStatementClosingDay() {
         return statementClosingDay;
     }
 
-    public void setStatementClosingDay(Integer statementClosingDay) {
+    public void setStatementClosingDay(Date statementClosingDay) {
         this.statementClosingDay = statementClosingDay;
     }
 

@@ -3,6 +3,7 @@ package com.moneyrollover.controller;
 import com.moneyrollover.model.Transaction;
 import com.moneyrollover.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
@@ -16,7 +17,7 @@ public class TransactionController {
     // Get all Transactions
     @GetMapping("/Transaction")
     public List<Transaction> getAllTransaction() {
-        return transactionRepository.findAll();
+        return transactionRepository.findAll(Sort.by(Sort.Direction.ASC, "transactionDate", "name"));
     }
 
     // Create a new Transaction
