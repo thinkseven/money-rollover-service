@@ -24,8 +24,11 @@ public class Transaction {
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "TransactionDate")
-    private Date transactionDate;
+    @Column(name = "DueDate")
+    private Date dueDate;
+
+    @Column(name = "PostedDate")
+    private Date postDate;
 
     @Column(name = "Amount")
     private Double amount;
@@ -70,12 +73,20 @@ public class Transaction {
         this.name = name;
     }
 
-    public Date getTransactionDate() {
-        return transactionDate;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setTransactionDate(Date date) {
-        this.transactionDate = date;
+    public void setDueDate(Date date) {
+        this.dueDate = date;
+    }
+
+    public Date getPostDate() {
+        return postDate;
+    }
+
+    public void setPostDate(Date date) {
+        this.postDate = date;
     }
 
     public Double getAmount() {

@@ -17,7 +17,7 @@ public class TransactionController {
     // Get all Transactions
     @GetMapping("/Transaction")
     public List<Transaction> getAllTransaction() {
-        return transactionRepository.findAll(Sort.by(Sort.Direction.ASC, "transactionDate", "name"));
+        return transactionRepository.findAll(Sort.by(Sort.Direction.ASC, "dueDate", "name"));
     }
 
     // Create a new Transaction
@@ -44,7 +44,8 @@ public class TransactionController {
 
         transaction.setAccountId(transactionDetails.getAccountId());
         transaction.setName(transactionDetails.getName());
-        transaction.setTransactionDate(transactionDetails.getTransactionDate());
+        transaction.setDueDate(transactionDetails.getDueDate());
+        transaction.setPostDate(transactionDetails.getPostDate());
         transaction.setAmount(transactionDetails.getAmount());
         transaction.setTransactionType(transactionDetails.getTransactionType());
         transaction.setComments(transactionDetails.getComments());
