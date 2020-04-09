@@ -2,6 +2,9 @@ package com.moneyrollover.controller;
 
 import com.moneyrollover.model.Account;
 import com.moneyrollover.repository.AccountRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +14,15 @@ import java.util.List;
 @RestController
 public class AccountController {
 
+    Logger logger = LoggerFactory.getLogger(AccountController.class);
+
     @Autowired
     AccountRepository accountRepository;
 
     // Get all accounts
     @GetMapping("/Account")
     public List<Account> getAllAccount() {
+        logger.info("get all accounts");
         return accountRepository.findAll(Sort.by(Sort.Direction.ASC, "paymentDueDay"));
     }
 
