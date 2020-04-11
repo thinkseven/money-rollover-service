@@ -1,8 +1,11 @@
 package com.moneyrollover.controller;
 
 import com.moneyrollover.model.Account;
+import com.moneyrollover.model.AccountDto;
 import com.moneyrollover.repository.AccountRepository;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +28,28 @@ public class AccountController {
   @Autowired
   AccountRepository accountRepository;
 
-  // Get all accounts
+  /**
+   * Get all accounts.
+   * @return
+   */
   @GetMapping("/Account")
-  public List<Account> getAllAccount() {
+  public List<AccountDto> getAllAccount() {
     logger.info("get all accounts");
-    return accountRepository.findAll(Sort.by(Sort.Direction.ASC, "paymentDueDay"));
+    return accountRepository
+      .findAll(Sort.by(Sort.Direction.ASC, "paymentDueDay"))
+      .stream()
+      .map(this::mapperToDto)
+      .collect(Collectors.toList());
   }
 
-  // Create a new account
+  /**
+   * Create a new account.
+   * @param account create new account
+   * @return
+   */
   @PostMapping("/Account")
-  public Account createAccount(@RequestBody Account account) {
-    return accountRepository.save(account);
+  public AccountDto createAccount(@RequestBody AccountDto account) {
+    return this.mapperToDto(accountRepository.save(this.mapperToEntity(account)));
   }
 
   /**
@@ -44,9 +58,10 @@ public class AccountController {
    * @return
    */
   @GetMapping("/Account/{id}")
-  public Account getAccountById(@PathVariable(value = "id") int accountId) {
+  public AccountDto getAccountById(@PathVariable(value = "id") int accountId) {
     return accountRepository
       .findById(accountId)
+      .map(this::mapperToDto)
       .orElseThrow(() -> new AccountNotFoundException(accountId));
   }
 
@@ -57,8 +72,8 @@ public class AccountController {
    * @return
    */
   @PutMapping("/Account/{id}")
-  public Account updateAccount(@PathVariable(value = "id") int accountId,
-      @RequestBody Account accountDetails) {
+  public AccountDto updateAccount(@PathVariable(value = "id") int accountId,
+      @RequestBody AccountDto accountDetails) {
 
     Account account = accountRepository
         .findById(accountId)
@@ -74,7 +89,7 @@ public class AccountController {
     account.setComments(accountDetails.getComments());
     account.setModifiedDate();
 
-    return accountRepository.save(account);
+    return this.mapperToDto(accountRepository.save(account));
   }
 
   /**
@@ -92,5 +107,15 @@ public class AccountController {
     accountRepository.delete(account);
     
     return ResponseEntity.ok().build();
+  }
+
+  private AccountDto mapperToDto(Account account) {
+    ModelMapper modelMapper = new ModelMapper();
+    return modelMapper.map(account, AccountDto.class);    
+  }
+
+  private Account mapperToEntity(AccountDto account) {
+    ModelMapper modelMapper = new ModelMapper();
+    return modelMapper.map(account, Account.class);
   }
 }

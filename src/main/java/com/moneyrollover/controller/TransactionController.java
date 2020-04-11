@@ -1,8 +1,11 @@
 package com.moneyrollover.controller;
 
 import com.moneyrollover.model.Transaction;
+import com.moneyrollover.model.TransactionDto;
 import com.moneyrollover.repository.TransactionRepository;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +23,27 @@ public class TransactionController {
   @Autowired
   TransactionRepository transactionRepository;
 
-  // Get all Transactions
+  /**
+   * Get all transactions.
+   * @return
+   */
   @GetMapping("/Transaction")
-  public List<Transaction> getAllTransaction() {
-    return transactionRepository.findAll(Sort.by(Sort.Direction.ASC, "dueDate", "name"));
+  public List<TransactionDto> getAllTransaction() {
+    return transactionRepository
+      .findAll(Sort.by(Sort.Direction.ASC, "dueDate", "name"))
+      .stream()
+      .map(this::mapperToDto)
+      .collect(Collectors.toList());
   }
 
-  // Create a new Transaction
+  /**
+   * Create a new Transaction.
+   * @param transaction create new transaction
+   * @return
+   */
   @PostMapping("/Transaction")
-  public Transaction createTransaction(@RequestBody Transaction transaction) {
-    return transactionRepository.save(transaction);
+  public TransactionDto createTransaction(@RequestBody TransactionDto transaction) {
+    return this.mapperToDto(transactionRepository.save(this.mapperToEntity(transaction)));
   }
 
   /**
@@ -38,9 +52,10 @@ public class TransactionController {
    * @return
    */
   @GetMapping("/Transaction/{id}")
-  public Transaction getTransactionById(@PathVariable(value = "id") int transactionId) {
+  public TransactionDto getTransactionById(@PathVariable(value = "id") int transactionId) {
     return transactionRepository
       .findById(transactionId)
+      .map(this::mapperToDto)
       .orElseThrow(() -> new TransactionNotFoundException(transactionId));
   }
 
@@ -51,10 +66,11 @@ public class TransactionController {
    * @return
    */
   @PutMapping("/Transaction/{id}")
-  public Transaction updateTransaction(@PathVariable(value = "id") int transactionId,
-      @RequestBody Transaction transactionDetails) {
+  public TransactionDto updateTransaction(@PathVariable(value = "id") int transactionId,
+      @RequestBody TransactionDto transactionDetails) {
 
-    Transaction transaction = transactionRepository.findById(transactionId)
+    Transaction transaction = transactionRepository
+        .findById(transactionId)
         .orElseThrow(() -> new TransactionNotFoundException(transactionId));
 
     transaction.setAccountId(transactionDetails.getAccountId());
@@ -65,7 +81,8 @@ public class TransactionController {
     transaction.setTransactionType(transactionDetails.getTransactionType());
     transaction.setComments(transactionDetails.getComments());
     transaction.setModifiedDate();
-    return transactionRepository.save(transaction);
+
+    return this.mapperToDto(transactionRepository.save(transaction));
   }
 
   /**
@@ -84,4 +101,15 @@ public class TransactionController {
 
     return ResponseEntity.ok().build();
   }
+
+  private TransactionDto mapperToDto(Transaction transaction) {
+    ModelMapper modelMapper = new ModelMapper();
+    return modelMapper.map(transaction, TransactionDto.class);    
+  }
+
+  private Transaction mapperToEntity(TransactionDto transaction) {
+    ModelMapper modelMapper = new ModelMapper();
+    return modelMapper.map(transaction, Transaction.class);
+  }
+
 }
