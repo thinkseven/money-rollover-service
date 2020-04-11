@@ -1,8 +1,14 @@
 {
-    "files.exclude": {
-        "**/.classpath": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.factorypath": true
-    }
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "java.checkstyle.version": "8.31",
+  "java.checkstyle.configuration": "/google_checks.xml",
+  "editor.renderControlCharacters": true,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "java.configuration.updateBuildConfiguration": "automatic"
 }

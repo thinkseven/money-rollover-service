@@ -1,7 +1,6 @@
 package com.moneyrollover.model;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,127 +12,123 @@ import javax.persistence.Table;
 @Table(name = "Account")
 public class Account {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AccountId")
-    private Integer accountId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "AccountId")
+  private int accountId;
 
-    @Column(name = "Name")
-    private String name;
+  @Column(name = "Name")
+  private String name;
 
-    @Column(name = "InitialBalance")
-    private Double initialBalance;
+  @Column(name = "InitialBalance")
+  private double initialBalance;
 
-    @Column(name = "CurrentBalance")
-    private Double currentBalance;
+  @Column(name = "CurrentBalance")
+  private double currentBalance;
 
-    @Column(name = "AccountType")
-    private String accountType;
+  @Column(name = "AccountType")
+  private String accountType;
 
-    @Column(name = "PaymentDueDay")
-    private Date paymentDueDay;
+  @Column(name = "PaymentDueDay")
+  private Date paymentDueDay;
 
-    @Column(name = "StatementClosingDay")
-    private Date statementClosingDay;
+  @Column(name = "StatementClosingDay")
+  private Date statementClosingDay;
 
-    @Column(name = "InstallmentAmount")
-    private Double installmentAmount;
+  @Column(name = "InstallmentAmount")
+  private double installmentAmount;
 
-    @Column(name = "Comments")
-    private String comments;
+  @Column(name = "Comments")
+  private String comments;
 
-    @Column(name = "CreatedDate")
-    private Date createdDate = new Date();
+  @Column(name = "CreatedDate")
+  private Date createdDate = new Date();
 
-    @Column(name = "ModifiedDate")
-    private Date modifiedDate = new Date();
+  @Column(name = "ModifiedDate")
+  private Date modifiedDate = new Date();
 
-    public Account() {
+  public int getAccountId() {
+    return accountId;
+  }
 
-    }
+  public void setAccountId(int accountId) {
+    this.accountId = accountId;
+  }
 
-    public Integer getAccountId() {
-        return accountId;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public double getInitialBalance() {
+    return initialBalance;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setInitialBalance(double initialBalance) {
+    this.initialBalance = initialBalance;
+  }
 
-    public Double getInitialBalance() {
-        return initialBalance;
-    }
+  public double getCurrentBalance() {
+    return currentBalance;
+  }
 
-    public void setInitialBalance(Double initialBalance) {
-        this.initialBalance = initialBalance;
-    }
+  public void setCurrentBalance(double currentBalance) {
+    this.currentBalance = currentBalance;
+  }
 
-    public Double getCurrentBalance() {
-        return currentBalance;
-    }
+  public String getAccountType() {
+    return accountType;
+  }
 
-    public void setCurrentBalance(Double currentBalance) {
-        this.currentBalance = currentBalance;
-    }
+  public void setAccountType(String accountType) {
+    this.accountType = accountType;
+  }
 
-    public String getAccountType() {
-        return accountType;
-    }
+  public Date getPaymentDueDay() {
+    return paymentDueDay;
+  }
 
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
-    }
+  public void setPaymentDueDay(Date paymentDueDay) {
+    this.paymentDueDay = paymentDueDay;
+  }
 
-    public Date getPaymentDueDay() {
-        return paymentDueDay;
-    }
+  public Date getStatementClosingDay() {
+    return statementClosingDay;
+  }
 
-    public void setPaymentDueDay(Date paymentDueDay) {
-        this.paymentDueDay = paymentDueDay;
-    }
+  public void setStatementClosingDay(Date statementClosingDay) {
+    this.statementClosingDay = statementClosingDay;
+  }
 
-    public Date getStatementClosingDay() {
-        return statementClosingDay;
-    }
+  public double getInstallmentAmount() {
+    return installmentAmount;
+  }
 
-    public void setStatementClosingDay(Date statementClosingDay) {
-        this.statementClosingDay = statementClosingDay;
-    }
+  public void setInstallmentAmount(double installmentAmount) {
+    this.installmentAmount = installmentAmount;
+  }
 
-    public Double getInstallmentAmount() {
-        return installmentAmount;
-    }
+  public String getComments() {
+    return comments;
+  }
 
-    public void setInstallmentAmount(Double installmentAmount) {
-        this.installmentAmount = installmentAmount;
-    }
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
 
-    public String getComments() {
-        return comments;
-    }
+  public Date getCreatedDate() {
+    return createdDate;
+  }
 
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
+  public Date getModifiedDate() {
+    return modifiedDate;
+  }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate() {
-        this.modifiedDate = new Date();
-    }
+  public void setModifiedDate() {
+    this.modifiedDate = new Date();
+  }
 
 }

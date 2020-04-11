@@ -1,14 +1,14 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-Application<money-rollover-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "com.moneyrollover.Application",
-            "projectName": "money-rollover-service",
-            "args": ""
-        }
-    ]
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-Application<money-rollover-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "com.moneyrollover.Application",
+      "projectName": "money-rollover-service",
+      "args": ""
+    }
+  ]
 }

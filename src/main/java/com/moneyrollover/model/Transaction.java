@@ -1,7 +1,6 @@
 package com.moneyrollover.model;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,115 +12,111 @@ import javax.persistence.Table;
 @Table(name = "Transaction")
 public class Transaction {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TransactionId")
-    private Integer transactionId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "TransactionId")
+  private int transactionId;
 
-    @Column(name = "AccountId")
-    private Integer accountId;
+  @Column(name = "AccountId")
+  private int accountId;
 
-    @Column(name = "Name")
-    private String name;
+  @Column(name = "Name")
+  private String name;
 
-    @Column(name = "DueDate")
-    private Date dueDate;
+  @Column(name = "DueDate")
+  private Date dueDate;
 
-    @Column(name = "PostedDate")
-    private Date postDate;
+  @Column(name = "PostedDate")
+  private Date postDate;
 
-    @Column(name = "Amount")
-    private Double amount;
+  @Column(name = "Amount")
+  private double amount;
 
-    @Column(name = "TransactionType")
-    private Boolean transactionType;
+  @Column(name = "TransactionType")
+  private boolean transactionType;
 
-    @Column(name = "Comments")
-    private String comments;
+  @Column(name = "Comments")
+  private String comments;
 
-    @Column(name = "CreatedDate")
-    private Date createdDate = new Date();
+  @Column(name = "CreatedDate")
+  private Date createdDate = new Date();
 
-    @Column(name = "ModifiedDate")
-    private Date modifiedDate = new Date();
+  @Column(name = "ModifiedDate")
+  private Date modifiedDate = new Date();
 
-    public Transaction() {
+  public int getTransactionId() {
+    return transactionId;
+  }
 
-    }
+  public void setTransactionId(int transactionId) {
+    this.transactionId = transactionId;
+  }
 
-    public Integer getTransactionId() {
-        return transactionId;
-    }
+  public int getAccountId() {
+    return accountId;
+  }
 
-    public void setTransactionId(Integer transactionId) {
-        this.transactionId = transactionId;
-    }
+  public void setAccountId(int accountId) {
+    this.accountId = accountId;
+  }
 
-    public Integer getAccountId() {
-        return accountId;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public Date getDueDate() {
+    return dueDate;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setDueDate(Date date) {
+    this.dueDate = date;
+  }
 
-    public Date getDueDate() {
-        return dueDate;
-    }
+  public Date getPostDate() {
+    return postDate;
+  }
 
-    public void setDueDate(Date date) {
-        this.dueDate = date;
-    }
+  public void setPostDate(Date date) {
+    this.postDate = date;
+  }
 
-    public Date getPostDate() {
-        return postDate;
-    }
+  public double getAmount() {
+    return amount;
+  }
 
-    public void setPostDate(Date date) {
-        this.postDate = date;
-    }
+  public void setAmount(double amount) {
+    this.amount = amount;
+  }
 
-    public Double getAmount() {
-        return amount;
-    }
+  public boolean getTransactionType() {
+    return transactionType;
+  }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
+  public void setTransactionType(boolean transactionType) {
+    this.transactionType = transactionType;
+  }
 
-    public Boolean getTransactionType() {
-        return transactionType;
-    }
+  public String getComments() {
+    return comments;
+  }
 
-    public void setTransactionType(Boolean transactionType) {
-        this.transactionType = transactionType;
-    }
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
 
-    public String getComments() {
-        return comments;
-    }
+  public Date getCreatedDate() {
+    return createdDate;
+  }
 
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
+  public Date getModifiedDate() {
+    return modifiedDate;
+  }
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate() {
-        this.modifiedDate = new Date();
-    }
+  public void setModifiedDate() {
+    this.modifiedDate = new Date();
+  }
 }

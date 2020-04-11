@@ -1,9 +1,13 @@
 package com.moneyrollover.controller;
 
 public class TransactionNotFoundResponse {
-    public String message;
+  private String message;
 
-    public TransactionNotFoundResponse(String message){
-        this.message = message;
-    }
+  public TransactionNotFoundResponse(String message) {
+    this.message = message;
+  }
+
+  public String getMessage() {
+    return message;
+  }
 }
