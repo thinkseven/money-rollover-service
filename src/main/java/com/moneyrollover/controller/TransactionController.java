@@ -1,13 +1,11 @@
 package com.moneyrollover.controller;
 
-import com.moneyrollover.model.Transaction;
 import com.moneyrollover.model.TransactionDto;
-import com.moneyrollover.repository.TransactionRepository;
+import com.moneyrollover.service.TransactionService;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,25 +13,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/Transaction")
 public class TransactionController {
+  
+  Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
   @Autowired
-  TransactionRepository transactionRepository;
+  TransactionService transactionService;
 
   /**
    * Get all transactions.
    * @return
    */
-  @GetMapping("/Transaction")
+  @GetMapping
   public List<TransactionDto> getAllTransaction() {
-    return transactionRepository
-      .findAll(Sort.by(Sort.Direction.ASC, "dueDate", "name"))
-      .stream()
-      .map(this::mapperToDto)
-      .collect(Collectors.toList());
+    logger.info("get all transactions");
+    return transactionService.getAllTransactions();
   }
 
   /**
@@ -41,9 +40,10 @@ public class TransactionController {
    * @param transaction create new transaction
    * @return
    */
-  @PostMapping("/Transaction")
+  @PostMapping
   public TransactionDto createTransaction(@RequestBody TransactionDto transaction) {
-    return this.mapperToDto(transactionRepository.save(this.mapperToEntity(transaction)));
+    logger.info("create new transaction");
+    return transactionService.createTransaction(transaction);
   }
 
   /**
@@ -51,12 +51,10 @@ public class TransactionController {
    * @param transactionId return the transaction for given transactionId
    * @return
    */
-  @GetMapping("/Transaction/{id}")
+  @GetMapping("/{id}")
   public TransactionDto getTransactionById(@PathVariable(value = "id") int transactionId) {
-    return transactionRepository
-      .findById(transactionId)
-      .map(this::mapperToDto)
-      .orElseThrow(() -> new TransactionNotFoundException(transactionId));
+    logger.info("find transaction");
+    return transactionService.getTransaction(transactionId);
   }
 
   /**
@@ -65,24 +63,11 @@ public class TransactionController {
    * @param transactionDetails update the found transaction with new details
    * @return
    */
-  @PutMapping("/Transaction/{id}")
+  @PutMapping("/{id}")
   public TransactionDto updateTransaction(@PathVariable(value = "id") int transactionId,
       @RequestBody TransactionDto transactionDetails) {
-
-    Transaction transaction = transactionRepository
-        .findById(transactionId)
-        .orElseThrow(() -> new TransactionNotFoundException(transactionId));
-
-    transaction.setAccountId(transactionDetails.getAccountId());
-    transaction.setName(transactionDetails.getName());
-    transaction.setDueDate(transactionDetails.getDueDate());
-    transaction.setPostDate(transactionDetails.getPostDate());
-    transaction.setAmount(transactionDetails.getAmount());
-    transaction.setTransactionType(transactionDetails.getTransactionType());
-    transaction.setComments(transactionDetails.getComments());
-    transaction.setModifiedDate();
-
-    return this.mapperToDto(transactionRepository.save(transaction));
+    logger.info("update transaction");
+    return transactionService.updateTransaction(transactionId, transactionDetails);
   }
 
   /**
@@ -91,25 +76,11 @@ public class TransactionController {
    *      otherwise throw Account Not found exception
    * @return
    */
-  @DeleteMapping("/Transaction/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<Object> deleteTransaction(@PathVariable(value = "id") int transactionId) {
-    Transaction transaction = transactionRepository
-        .findById(transactionId)
-        .orElseThrow(() -> new TransactionNotFoundException(transactionId));
-
-    transactionRepository.delete(transaction);
-
+    transactionService.deleteTransaction(transactionId);
+    logger.info("deleted transaction");
     return ResponseEntity.ok().build();
   }
-
-  private TransactionDto mapperToDto(Transaction transaction) {
-    ModelMapper modelMapper = new ModelMapper();
-    return modelMapper.map(transaction, TransactionDto.class);    
-  }
-
-  private Transaction mapperToEntity(TransactionDto transaction) {
-    ModelMapper modelMapper = new ModelMapper();
-    return modelMapper.map(transaction, Transaction.class);
-  }
-
+  
 }

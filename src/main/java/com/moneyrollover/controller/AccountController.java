@@ -1,15 +1,11 @@
 package com.moneyrollover.controller;
 
-import com.moneyrollover.model.Account;
 import com.moneyrollover.model.AccountDto;
-import com.moneyrollover.repository.AccountRepository;
+import com.moneyrollover.service.AccountService;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,29 +13,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
+@RequestMapping("/Account")
 public class AccountController {
 
   Logger logger = LoggerFactory.getLogger(AccountController.class);
 
   @Autowired
-  AccountRepository accountRepository;
+  AccountService accountService;
 
   /**
    * Get all accounts.
    * @return
    */
-  @GetMapping("/Account")
+  @GetMapping
   public List<AccountDto> getAllAccount() {
     logger.info("get all accounts");
-    return accountRepository
-      .findAll(Sort.by(Sort.Direction.ASC, "paymentDueDay"))
-      .stream()
-      .map(this::mapperToDto)
-      .collect(Collectors.toList());
+    return accountService.getAllAccounts();
   }
 
   /**
@@ -47,9 +40,10 @@ public class AccountController {
    * @param account create new account
    * @return
    */
-  @PostMapping("/Account")
+  @PostMapping
   public AccountDto createAccount(@RequestBody AccountDto account) {
-    return this.mapperToDto(accountRepository.save(this.mapperToEntity(account)));
+    logger.info("create new account");
+    return accountService.createAccount(account);
   }
 
   /**
@@ -57,12 +51,10 @@ public class AccountController {
    * @param accountId find the account with given accountId
    * @return
    */
-  @GetMapping("/Account/{id}")
+  @GetMapping("/{id}")
   public AccountDto getAccountById(@PathVariable(value = "id") int accountId) {
-    return accountRepository
-      .findById(accountId)
-      .map(this::mapperToDto)
-      .orElseThrow(() -> new AccountNotFoundException(accountId));
+    logger.info("find new account");
+    return accountService.getAccount(accountId);
   }
 
   /**
@@ -71,25 +63,11 @@ public class AccountController {
    * @param accountDetails update the found account with new details
    * @return
    */
-  @PutMapping("/Account/{id}")
+  @PutMapping("/{id}")
   public AccountDto updateAccount(@PathVariable(value = "id") int accountId,
       @RequestBody AccountDto accountDetails) {
-
-    Account account = accountRepository
-        .findById(accountId)
-        .orElseThrow(() -> new AccountNotFoundException(accountId));
-
-    account.setName(accountDetails.getName());
-    account.setInitialBalance(accountDetails.getInitialBalance());
-    account.setCurrentBalance(accountDetails.getCurrentBalance());
-    account.setAccountType(accountDetails.getAccountType());
-    account.setPaymentDueDay(accountDetails.getPaymentDueDay());
-    account.setStatementClosingDay(accountDetails.getStatementClosingDay());
-    account.setInstallmentAmount(accountDetails.getInstallmentAmount());
-    account.setComments(accountDetails.getComments());
-    account.setModifiedDate();
-
-    return this.mapperToDto(accountRepository.save(account));
+    logger.info("update account");
+    return accountService.updateAccount(accountId, accountDetails);
   }
 
   /**
@@ -98,24 +76,11 @@ public class AccountController {
    *      otherwise throw Account Not found exception
    * @return
    */
-  @DeleteMapping("/Account/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity<Object> deleteAccount(@PathVariable(value = "id") int accountId) {
-    Account account = accountRepository
-        .findById(accountId)
-        .orElseThrow(() -> new AccountNotFoundException(accountId));
-
-    accountRepository.delete(account);
-    
+    logger.info("delete account");
+    accountService.deleteAccount(accountId);    
     return ResponseEntity.ok().build();
   }
 
-  private AccountDto mapperToDto(Account account) {
-    ModelMapper modelMapper = new ModelMapper();
-    return modelMapper.map(account, AccountDto.class);    
-  }
-
-  private Account mapperToEntity(AccountDto account) {
-    ModelMapper modelMapper = new ModelMapper();
-    return modelMapper.map(account, Account.class);
-  }
 }
