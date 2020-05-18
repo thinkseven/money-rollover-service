@@ -11,4 +11,4 @@ RUN mvn -f /home/app/pom.xml -Dmaven.test.skip=true clean package
 #
 FROM openjdk:13.0.2-jdk
 COPY --from=build /home/app/target/*.jar /usr/local/lib/app.jar
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","/app.jar"]
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","/usr/local/lib/app.jar"]
